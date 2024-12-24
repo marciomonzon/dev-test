@@ -1,23 +1,39 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories
 {
     public class SaleRepository : ISaleRepository
     {
-        public Task<Sale> CreateAsync(Sale sale, CancellationToken cancellationToken = default)
+        private readonly DefaultContext _context;
+
+        public SaleRepository(DefaultContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<Sale?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<Sale> CreateAsync(Sale sale, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            await _context.Sales.AddAsync(sale, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+            return sale;
         }
 
-        public Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<Sale?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return await _context.Sales.FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
+        }
+
+        public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var sale = await GetByIdAsync(id, cancellationToken);
+            if (sale == null)
+                return false;
+
+            _context.Sales.Remove(sale);
+            await _context.SaveChangesAsync(cancellationToken);
+            return true;
         }
     }
 }
