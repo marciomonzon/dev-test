@@ -1,8 +1,6 @@
-﻿using MediatR;
-
-namespace Ambev.DeveloperEvaluation.Application.Cart.CreateCart
+﻿namespace Ambev.DeveloperEvaluation.Application.Cart.GetCart.GetAllCarts
 {
-    public class CreateCartCommand : IRequest<CreateCartResult>
+    public class GetAllCartsResult
     {
         public Guid Id { get; private set; }
         public Guid UserId { get; private set; }

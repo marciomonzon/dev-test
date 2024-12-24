@@ -16,8 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Cart\GetCart\GetCartById\" />
-    <Folder Include="Cart\GetCart\GetAllCarts\" />
     <Folder Include="Cart\UpdateCart\" />
   </ItemGroup>
 
