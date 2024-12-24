@@ -1,6 +1,6 @@
-﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct.GetAllProducts
 {
-    public class GetProductResponse
+    public class GetAllProductsResponse
     {
         public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;

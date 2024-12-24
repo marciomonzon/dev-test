@@ -6,7 +6,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
     {
         public Guid SaleNumberId { get; set; }
         public string CustomerName { get; set; } = string.Empty;
-        public List<string> Products { get; set; } = new List<string>();
+        public List<Guid> Products { get; set; } = new List<Guid>();
         public decimal Discount { get; set; }
         public decimal TotalAmount { get; set; }
     }
