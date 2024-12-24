@@ -1,13 +1,13 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Product.CreateProduct;
 using Ambev.DeveloperEvaluation.Application.Product.DeleteProduct;
-using Ambev.DeveloperEvaluation.Application.Product.GetProduct;
-using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
+using Ambev.DeveloperEvaluation.Application.Product.GetProduct.GetAllProducts;
+using Ambev.DeveloperEvaluation.Application.Product.GetProduct.GetProductById;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.DeleteProduct;
-using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct.GetProductById;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.UpdateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
-using Ambev.DeveloperEvaluation.WebApi.Features.Users.DeleteUser;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -58,30 +58,20 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
             });
         }
 
-        /// <summary>
-        /// Retrieves a product by their ID
-        /// </summary>
-        /// <param name="id">The unique identifier of the product</param>
-        /// 
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>The product details if found</returns>
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ApiResponseWithData<GetProductResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+        [HttpGet]
+        [ProducesResponseType(typeof(ApiResponseWithData<ProductResult>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllProducts(CancellationToken cancellationToken)
         {
-            var command = _mapper.Map<GetProductCommand>(request.Id);
+            var command = new GetAllProductsCommand();
             var response = await _mediator.Send(command, cancellationToken);
 
-            return Ok(new ApiResponseWithData<GetProductResponse>
+            return Ok(new ApiResponseWithData<ProductResult>
             {
                 Success = true,
                 Message = "Product retrieved successfully",
-                Data = _mapper.Map<GetProductResponse>(response)
+                Data = _mapper.Map<ProductResult>(response)
             });
         }
-
 
         /// <summary>
         /// Creates a new sale
@@ -92,7 +82,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateUser([FromBody] CreateProductRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest request, CancellationToken cancellationToken)
         {
             var validator = new CreateProductRequestValidator();
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
@@ -111,7 +101,33 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
             });
         }
 
-        
+        /// <summary>
+        /// Creates a new sale
+        /// </summary>
+        /// <param name="request">The sale creation request</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>The created sale details</returns>
+        [HttpPut]
+        [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateProductRequest request, CancellationToken cancellationToken)
+        {
+            var validator = new UpdateProductRequestValidator();
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
+            var command = _mapper.Map<UpdateProductRequest>(request);
+            var response = await _mediator.Send(command, cancellationToken);
+
+            return Created(string.Empty, new ApiResponseWithData<UpdateProductResponse>
+            {
+                Success = true,
+                Message = "Product updated successfully",
+                Data = _mapper.Map<UpdateProductResponse>(response)
+            });
+        }
 
         /// <summary>
         /// Update a product by their ID

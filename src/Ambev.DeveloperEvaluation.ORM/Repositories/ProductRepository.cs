@@ -20,6 +20,16 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
             return product;
         }
 
+        public async Task<IEnumerable<Product>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            var products = await _context
+                               .Products
+                               .AsNoTracking()
+                               .ToListAsync();
+
+            return products;
+        }
+
         public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context
@@ -60,6 +70,6 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
             return true;
         }
 
-     
+        
     }
 }
