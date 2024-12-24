@@ -16,11 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Cart\DeleteCart\" />
-    <Folder Include="Cart\GetCart\" />
+    <Folder Include="Cart\GetCart\GetCartById\" />
+    <Folder Include="Cart\GetCart\GetAllCarts\" />
     <Folder Include="Cart\UpdateCart\" />
-    <Folder Include="Sales\DeleteSale\" />
-    <Folder Include="Sales\GetSale\" />
   </ItemGroup>
 
 </Project>

@@ -8,7 +8,22 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
     {
         public void Configure(EntityTypeBuilder<Cart> builder)
         {
-            throw new NotImplementedException();
+            builder.HasKey(c => c.Id);
+
+            builder.Property(c => c.UserId)
+                   .IsRequired();
+
+            builder.HasOne(c => c.User)
+                   .WithMany() 
+                   .HasForeignKey(c => c.UserId)
+                   .OnDelete(DeleteBehavior.Cascade); 
+
+            builder.Property(c => c.Date)
+                   .IsRequired();
+
+            builder.HasMany(c => c.CartProducts)
+                   .WithOne() 
+                   .OnDelete(DeleteBehavior.Cascade); 
         }
     }
 }

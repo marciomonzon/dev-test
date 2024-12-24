@@ -29,6 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Cart\GetCart\" />
+    <Folder Include="Features\Cart\UpdateCart\" />
     <Folder Include="Features\Users\GetUser\" />
     <Folder Include="Features\Users\DeleteUser\" />
     <Folder Include="Features\Users\ListUsers\" />
