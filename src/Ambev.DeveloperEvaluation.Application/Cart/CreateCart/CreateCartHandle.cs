@@ -32,7 +32,9 @@ namespace Ambev.DeveloperEvaluation.Application.Cart.CreateCart
             cart.AddProductsToCart(command.Products);
 
             cart.TotalAmount = await GetCalculatedTotalAmountAsync(command.Products);
+
             cart.Discount = ApplyDiscountIdenticalitems(command.Products);
+
             cart.ApplyDiscount();
 
             var createdProduct = await _cartRepository.CreateAsync(cart, cancellationToken);
@@ -67,18 +69,15 @@ namespace Ambev.DeveloperEvaluation.Application.Cart.CreateCart
             var quantity = identicalItems.Count();
             decimal discount = 0;
 
+            if (quantity > 20)
+                throw new Exception("It's not possible to sell above 20 identical items");
+
             if (quantity >= 4 && quantity < 10)
-            {
                 discount = 0.10m;
-            }
             else if (quantity >= 10 && quantity <= 20)
-            {
                 discount = 0.20m;
-            }
             else
-            {
                 discount = 0.0m;
-            }
 
             return discount;
         }
