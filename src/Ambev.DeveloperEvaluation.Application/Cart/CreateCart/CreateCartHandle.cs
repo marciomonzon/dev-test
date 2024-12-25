@@ -5,13 +5,13 @@ using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Cart.CreateCart
 {
-    public class CreateCartHandler : IRequestHandler<CreateCartCommand, CreateCartResult>
+    public class CreateCartHandle : IRequestHandler<CreateCartCommand, CreateCartResult>
     {
         private readonly ICartRepository _cartRepository;
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
 
-        public CreateCartHandler(ICartRepository cartRepository,
+        public CreateCartHandle(ICartRepository cartRepository,
                                  IProductRepository productRepository,
                                  IMapper mapper)
         {

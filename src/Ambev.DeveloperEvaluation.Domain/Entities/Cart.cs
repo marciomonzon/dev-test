@@ -27,5 +27,10 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
                 CartProducts.Add(new CartProduct { CartId = Id, ProductId = item });
             }
         }
+
+        public void RemoveAllProducts(List<Guid> products) 
+        {
+            products = new List<Guid>();
+        }
     }
 }

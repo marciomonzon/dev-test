@@ -1,7 +1,12 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Cart.CreateCart;
+using Ambev.DeveloperEvaluation.Application.Cart.DeleteCart;
+using Ambev.DeveloperEvaluation.Application.Cart.GetCart.GetAllCarts;
+using Ambev.DeveloperEvaluation.Application.Cart.GetCart.GetCartById;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Cart.CreateCart;
 using Ambev.DeveloperEvaluation.WebApi.Features.Cart.DeleteCart;
+using Ambev.DeveloperEvaluation.WebApi.Features.Cart.GetCart.GetCart;
+using Ambev.DeveloperEvaluation.WebApi.Features.Cart.UpdateCart;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
