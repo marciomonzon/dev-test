@@ -17,10 +17,11 @@
 <p> This project was made using Hexagonal Architecture and following DDD principles with CQRS. Also the API was made following REST principles. </p>
 
 ## Unit Tests
+* Tests made using xUnit and AAA pattern;
 * Cart Unit Test;
 * Product Unit Test;
 
-## Design Patterns:
+## Design Patterns and good practices:
 * CQRS;
 * Repository;
 * Mediatr;
