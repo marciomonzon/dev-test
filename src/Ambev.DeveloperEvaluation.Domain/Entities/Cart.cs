@@ -10,6 +10,9 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         public DateTime Date { get; private set; }
         public ICollection<CartProduct> CartProducts { get; set; } = new List<CartProduct>();
 
+        public decimal Discount { get; set; }
+        public decimal TotalAmount { get; set; }
+
         public Cart()
         {
         }
@@ -31,6 +34,11 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         public void RemoveAllProducts(List<Guid> products) 
         {
             products = new List<Guid>();
+        }
+
+        public void ApplyDiscount()
+        {
+            TotalAmount = TotalAmount - Discount;
         }
     }
 }

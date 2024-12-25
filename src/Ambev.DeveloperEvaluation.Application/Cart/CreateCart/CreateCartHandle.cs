@@ -12,8 +12,8 @@ namespace Ambev.DeveloperEvaluation.Application.Cart.CreateCart
         private readonly IMapper _mapper;
 
         public CreateCartHandle(ICartRepository cartRepository,
-                                 IProductRepository productRepository,
-                                 IMapper mapper)
+                                IProductRepository productRepository,
+                                IMapper mapper)
         {
             _cartRepository = cartRepository;
             _productRepository = productRepository;
@@ -31,10 +31,27 @@ namespace Ambev.DeveloperEvaluation.Application.Cart.CreateCart
             var cart = new Domain.Entities.Cart(command.UserId);
             cart.AddProductsToCart(command.Products);
 
+            cart.TotalAmount = await GetCalculatedTotalAmountAsync(command.Products);
+            cart.Discount = ApplyDiscountIdenticalitems(command.Products);
+            cart.ApplyDiscount();
+
             var createdProduct = await _cartRepository.CreateAsync(cart, cancellationToken);
             var result = _mapper.Map<CreateCartResult>(createdProduct);
 
             return result;
+        }
+
+        private async Task<decimal> GetCalculatedTotalAmountAsync(List<Guid> productsIds)
+        {
+            var products = await GetProductsByIdsAsync(productsIds);
+            decimal totalAmount = 0;
+
+            foreach (var product in products)
+            {
+                totalAmount += product.Price;
+            }
+
+            return totalAmount;
         }
 
         private async Task<List<Domain.Entities.Product>> GetProductsByIdsAsync(List<Guid> productsIds)
@@ -44,39 +61,37 @@ namespace Ambev.DeveloperEvaluation.Application.Cart.CreateCart
             return products != null ? products.ToList() : new List<Domain.Entities.Product>();
         }
 
-        private List<Domain.Entities.Product> GetIdenticalProducts(List<Domain.Entities.Product> products)
+        private decimal ApplyDiscountIdenticalitems(List<Guid> products)
         {
-            var idsToMatch = products.Select(x => x.Id).ToList();
+            var identicalItems = GetIdenticalProducts(products);
+            var quantity = identicalItems.Count();
+            decimal discount = 0;
 
-            var matchedProducts = products
-           .Where(p => idsToMatch.Contains(p.Id))
-           .ToList();
+            if (quantity >= 4 && quantity < 10)
+            {
+                discount = 0.10m;
+            }
+            else if (quantity >= 10 && quantity <= 20)
+            {
+                discount = 0.20m;
+            }
+            else
+            {
+                discount = 0.0m;
+            }
 
-            return matchedProducts;
+            return discount;
         }
 
-        //private decimal ApplyAndGetDiscounts(CreateSaleCommand command)
-        //{
-        //    var quantity = command.Products.Count;
-        //    decimal discount = 0;
+        private List<Guid> GetIdenticalProducts(List<Guid> idsProductToMatch)
+        {
+            var identicalItems = idsProductToMatch
+                                 .GroupBy(g => g)
+                                 .Where(g => g.Count() > 1)
+                                 .Select(g => g.Key)
+                                 .ToList();
 
-        //    foreach (var product in command.Products)
-        //    {
-        //        if (quantity >= 4 && quantity < 10)
-        //        {
-        //            discount = 0.10m;
-        //        }
-        //        else if (quantity >= 10 && quantity <= 20)
-        //        {
-        //            discount = 0.20m;
-        //        }
-        //        else
-        //        {
-        //            discount = 0.0m;
-        //        }
-        //    }
-
-        //    return discount;
-        //}
+            return identicalItems;
+        }
     }
 }
