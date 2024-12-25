@@ -2,6 +2,8 @@
 using AutoMapper;
 using FluentValidation;
 using MediatR;
+using System;
+using System.Linq;
 
 namespace Ambev.DeveloperEvaluation.Application.Cart.CreateCart
 {
@@ -65,16 +67,15 @@ namespace Ambev.DeveloperEvaluation.Application.Cart.CreateCart
 
         private decimal ApplyDiscountIdenticalitems(List<Guid> products)
         {
-            var identicalItems = GetIdenticalProducts(products);
-            var quantity = identicalItems.Count();
+            var quantityIdenticalItems = GetQuantityIdenticalProducts(products);
             decimal discount = 0;
 
-            if (quantity > 20)
+            if (quantityIdenticalItems > 20)
                 throw new Exception("It's not possible to sell above 20 identical items");
 
-            if (quantity >= 4 && quantity < 10)
+            if (quantityIdenticalItems >= 4 && quantityIdenticalItems < 10)
                 discount = 0.10m;
-            else if (quantity >= 10 && quantity <= 20)
+            else if (quantityIdenticalItems >= 10 && quantityIdenticalItems <= 20)
                 discount = 0.20m;
             else
                 discount = 0.0m;
@@ -82,15 +83,15 @@ namespace Ambev.DeveloperEvaluation.Application.Cart.CreateCart
             return discount;
         }
 
-        private List<Guid> GetIdenticalProducts(List<Guid> idsProductToMatch)
+        private int GetQuantityIdenticalProducts(List<Guid> idsProductToMatch)
         {
-            var identicalItems = idsProductToMatch
-                                 .GroupBy(g => g)
-                                 .Where(g => g.Count() > 1)
-                                 .Select(g => g.Key)
-                                 .ToList();
+            var identicalItemsTotal = idsProductToMatch
+           .GroupBy(g => g)
+           .Where(group => group.Count() > 1)
+           .Sum(group => group.Count() - 1);
 
-            return identicalItems;
+
+            return identicalItemsTotal;
         }
     }
 }
