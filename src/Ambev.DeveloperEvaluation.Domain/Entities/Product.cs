@@ -11,6 +11,13 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         public string Category { get; private set; } = string.Empty;
         public string Image { get; private set; } = string.Empty;
 
+        public ICollection<CartProduct>? CartProducts { get; set; }
+        public ICollection<SaleProduct>? SaleProducts { get; set; }
+
+        public Product()
+        {
+        }
+
         public Product(string title,
                       decimal price,
                       string description,

@@ -7,7 +7,6 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.DeleteProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct.GetProductById;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.UpdateProduct;
-using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -93,11 +92,11 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
             var command = _mapper.Map<CreateProductCommand>(request);
             var response = await _mediator.Send(command, cancellationToken);
 
-            return Created(string.Empty, new ApiResponseWithData<CreateSaleResponse>
+            return Created(string.Empty, new ApiResponseWithData<CreateProductResponse>
             {
                 Success = true,
                 Message = "Product created successfully",
-                Data = _mapper.Map<CreateSaleResponse>(response)
+                Data = _mapper.Map<CreateProductResponse>(response)
             });
         }
 
