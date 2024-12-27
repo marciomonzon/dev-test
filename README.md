@@ -1,7 +1,3 @@
-# Evaluation Development
-
-<p>This project is a evaluation test. </p>
-
 ## Stack
 * ASP.NET;
 * .NET 8;
@@ -9,12 +5,11 @@
 * Fluent Validation;
 * Fluent API;
 * Mediatr;
-* CQRS;
 * XUnit;
 * NSubstitute for Moqs
 
 ## Architecture
-<p> This project was made using Hexagonal Architecture and following DDD principles with CQRS. Also the API was made following REST principles. </p>
+<p> This project was made using Hexagonal Architecture and following DDD principles. </p>
 
 ## Unit Tests
 * Tests made using xUnit and AAA pattern;
@@ -30,5 +25,5 @@
 
 ## General Development
 <p>I made the code following the base project principles. Creating Controllers, entities, validations, mappings and all classes needed to complete the flow. 
-  Each layer has it own class, low couplment and following CQRS principles.
+  Each layer has it own class and low couplment.
 </p>
